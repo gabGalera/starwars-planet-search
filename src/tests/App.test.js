@@ -29,7 +29,15 @@ test('I am your test', async () => {
 
   userEvent.selectOptions(columnFilter, 'population')
   userEvent.selectOptions(compareFilter, 'menor que')
-  userEvent.type(numberFilter, '4500000000')
+  userEvent.type(numberFilter, '12120')
+  userEvent.click(buttonFilter)
+
+  userEvent.selectOptions(columnFilter, 'orbital_period')
+  userEvent.selectOptions(compareFilter, 'maior que')
+  userEvent.click(buttonFilter)
+
+  userEvent.selectOptions(columnFilter, 'diameter')
+  userEvent.selectOptions(compareFilter, 'igual a')
   userEvent.click(buttonFilter)
   screen.debug()
 
