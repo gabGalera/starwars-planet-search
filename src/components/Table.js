@@ -1,33 +1,115 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const planets = useContext(PlanetsContext);
-  const [filteredPlanets, setFilteredPanets] = useState([]);
-  const [inputText, setInputText] = useState('');
+  const { planets, filteredPlanets, setFilteredPanets } = useContext(PlanetsContext);
+  const [column, setColumn] = useState('population');
+  const [compare, setCompare] = useState('maior que');
+  const [number, setNumber] = useState(0);
 
   useEffect(() => {
     setFilteredPanets(planets);
-  }, [planets]);
+  }, [planets, setFilteredPanets]);
 
-  const filterFunc = ({ target }) => {
-    setInputText(target.value);
-    const newArray = planets.filter((planet) => planet.name.includes(target.value));
-    setFilteredPanets(newArray);
+  const filterColumn = ({ target }) => {
+    const newColumn = planets.map((planet) => ({
+      [target.value]: planet[target.value],
+    }));
+    setColumn(target.value);
+    setFilteredPanets(newColumn);
   };
 
+  const handleClick = () => {
+    const newColumn = planets.map((planet) => ({
+      [column]: planet[column],
+    }));
+
+    switch (compare) {
+    case 'maior que':
+      setFilteredPanets(
+        newColumn.filter((planet) => Number(Object.values(planet)[0]) > number),
+      );
+      break;
+    case 'menor que':
+      setFilteredPanets(
+        newColumn.filter((planet) => Number(Object.values(planet)[0]) < number),
+      );
+      break;
+    default:
+      setFilteredPanets(
+        newColumn.filter((planet) => Number(Object.values(planet)[0]) === Number(number)),
+      );
+    }
+  };
   return (
     <>
+      <select onClick={ filterColumn } data-testid="column-filter">
+        <option
+          value="population"
+        >
+          population
+        </option>
+        <option
+          value="orbital_period"
+        >
+          orbital_period
+        </option>
+        <option
+          value="diameter"
+        >
+          diameter
+        </option>
+        <option
+          value="rotation_period"
+        >
+          rotation_period
+        </option>
+        <option
+          value="surface_water"
+        >
+          surface_water
+        </option>
+      </select>
+      <select
+        data-testid="comparison-filter"
+        onClick={ ({ target }) => setCompare(target.value) }
+      >
+        <option
+          value="maior que"
+        >
+          maior que
+        </option>
+        <option
+          value="menor que"
+        >
+          menor que
+        </option>
+        <option
+          value="igual a"
+        >
+          igual a
+        </option>
+      </select>
       <input
-        type="text"
-        value={ inputText }
-        onChange={ filterFunc }
-        data-testid="name-filter"
+        type="number"
+        data-testid="value-filter"
+        value={ number }
+        onChange={ ({ target }) => setNumber(target.value) }
       />
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ handleClick }
+      >
+        Filtrar
+      </button>
       <table style={ { overflow: 'hidden' } }>
         <thead>
           <tr>
-            {Object.keys(planets[0]).map((title) => (
+            {(filteredPlanets.length > 0
+              ? Object.keys(filteredPlanets[0])
+              : Object.keys(planets[0])
+            ).map((title) => (
               <th
                 key={ title }
                 style={ {
@@ -45,7 +127,7 @@ function Table() {
                   color: '#FFFFFF',
                 } }
               >
-                {title}
+                {(title.charAt(0).toUpperCase() + title.slice(1)).replace(/_/, ' ')}
               </th>
             ))}
           </tr>
