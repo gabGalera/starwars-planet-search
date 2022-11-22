@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useContext } from 'react';
+import PlanetsContext from '../context/PlanetsContext';
 
-function Table({ planets }) {
+function Table() {
+  const planets = useContext(PlanetsContext);
   const [filteredPlanets, setFilteredPanets] = useState([]);
   const [inputText, setInputText] = useState('');
 
@@ -69,9 +70,5 @@ function Table({ planets }) {
     </>
   );
 }
-
-Table.propTypes = {
-  planets: PropTypes.shape().isRequired,
-};
 
 export default Table;

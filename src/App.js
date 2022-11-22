@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from './components/Table';
 import './App.css';
+import PlanetsContext from './context/PlanetsContext';
 
 function App() {
   const [planets, setPlanets] = useState([]);
@@ -22,7 +23,9 @@ function App() {
   if (loading) return <h1>Loading...</h1>;
 
   return (
-    <Table planets={ planets } />
+    <PlanetsContext.Provider value={ planets }>
+      <Table />
+    </PlanetsContext.Provider>
   );
 }
 
