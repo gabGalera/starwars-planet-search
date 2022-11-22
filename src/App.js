@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Table from './components/Table';
 import './App.css';
 
 function App() {
@@ -21,23 +22,7 @@ function App() {
   if (loading) return <h1>Loading...</h1>;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {Object.keys(planets[0]).map((title) => <th key={ title }>{title}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {planets
-          .map((planet) => (
-            <tr key={ planet.name }>
-              {
-                Object.values(planet).map((entry) => <th key={ entry.name }>{entry}</th>)
-              }
-            </tr>
-          ))}
-      </tbody>
-    </table>
+    <Table planets={ planets } />
   );
 }
 
