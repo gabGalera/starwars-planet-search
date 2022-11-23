@@ -62,6 +62,7 @@ function Table() {
     setFilteredPanets(filteringPlanets);
     setAppliedFilters(apply);
   };
+
   return (
     <>
       {console.log(filteredPlanets)}

@@ -28,17 +28,26 @@ test('I am your test', async () => {
   const buttonFilter = await screen.findByTestId(/button-filter/)
 
   userEvent.selectOptions(columnFilter, 'population')
-  userEvent.selectOptions(compareFilter, 'menor que')
+  userEvent.selectOptions(compareFilter, 'maior que')
   userEvent.type(numberFilter, '12120')
   userEvent.click(buttonFilter)
 
   userEvent.selectOptions(columnFilter, 'orbital_period')
-  userEvent.selectOptions(compareFilter, 'maior que')
+  userEvent.selectOptions(compareFilter, 'menor que')
   userEvent.click(buttonFilter)
 
   userEvent.selectOptions(columnFilter, 'diameter')
   userEvent.selectOptions(compareFilter, 'igual a')
   userEvent.click(buttonFilter)
-  screen.debug()
+  
+  let deleteButtons = await screen.findAllByText(/apagar/i)
+  userEvent.click(deleteButtons[2])
+  
+  deleteButtons = await screen.findAllByText(/apagar/i)
+  expect(deleteButtons).toHaveLength(2)
 
+  const removeAllButton = await screen.findByText(/remover/i)
+  userEvent.click(removeAllButton)
+
+  expect(deleteButtons[0]).not.toBeInTheDocument()
 });
