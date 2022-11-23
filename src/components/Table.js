@@ -13,51 +13,40 @@ function Table() {
   }, [planets, setFilteredPanets]);
 
   const filterColumn = ({ target }) => {
-    if (appliedFilters.length > 0) {
-      // const newColumn = filteredPlanets.map((planet) => appliedFilters.map((entry) => ({
-      //   [entry.column]: planet[entry.column],
-      //   [target.value]: planet[target.value],
-      // }))[0]);
-      // setColumn(target.value);
-      // setFilteredPanets(newColumn);
-    }
-    // const newColumn = filteredPlanets.map((planet) => ({
-    //   [target.value]: planet[target.value],
-    // }));
     setColumn(target.value);
-    // setFilteredPanets(newColumn);
   };
 
   const handleClick = () => {
-    const apply = {
+    const apply = [...appliedFilters, {
       column,
       compare,
       number,
-    };
+    }];
 
-    const filtering = () => {
-      switch (compare) {
+    let filteringPlanets = planets;
+
+    const filtering = (applying) => {
+      switch (applying.compare) {
       case 'maior que':
-        return filteredPlanets
-          .filter((planet) => Number(planet[column]) > Number(number));
-        // .map((entry) => ({ ...entry, [column]: entry[column] }));
+        return filteringPlanets
+          .filter((planet) => Number(planet[applying.column]) > Number(applying.number));
       case 'menor que':
-        return filteredPlanets
-          .filter((planet) => Number(planet[column]) < Number(number));
-        // .map((entry) => ({ ...entry, [column]: entry[column] }));
+        return filteringPlanets
+          .filter((planet) => Number(planet[applying.column]) < Number(applying.number));
       default:
-        return filteredPlanets
-          .filter((planet) => Number(planet[column]) === Number(
-            number,
+        return filteringPlanets
+          .filter((planet) => Number(planet[applying.column]) === Number(
+            applying.number,
           ));
-          // .map((entry) => ({ ...entry, [column]: entry[column] }));
       }
     };
 
-    // console.log();
-    setFilteredPanets(filtering());
+    apply.forEach((applying) => { filteringPlanets = filtering(applying); });
+
+    setFilteredPanets(filteringPlanets);
     setAppliedFilters(apply);
   };
+
   return (
     <>
       {console.log(filteredPlanets)}
@@ -65,31 +54,51 @@ function Table() {
         onClick={ filterColumn }
         data-testid="column-filter"
       >
-        <option
-          value="population"
-        >
-          population
-        </option>
-        <option
-          value="orbital_period"
-        >
-          orbital_period
-        </option>
-        <option
-          value="diameter"
-        >
-          diameter
-        </option>
-        <option
-          value="rotation_period"
-        >
-          rotation_period
-        </option>
-        <option
-          value="surface_water"
-        >
-          surface_water
-        </option>
+        {
+          !appliedFilters.find((applying) => applying.column === 'population')
+        && (
+          <option
+            value="population"
+          >
+            population
+          </option>)
+        }
+        {
+          !appliedFilters.find((applying) => applying.column === 'orbital_period')
+        && (
+          <option
+            value="orbital_period"
+          >
+            orbital_period
+          </option>)
+        }
+        {
+          !appliedFilters.find((applying) => applying.column === 'diameter')
+        && (
+          <option
+            value="diameter"
+          >
+            diameter
+          </option>)
+        }
+        {
+          !appliedFilters.find((applying) => applying.column === 'rotation_period')
+        && (
+          <option
+            value="rotation_period"
+          >
+            rotation_period
+          </option>)
+        }
+        {
+          !appliedFilters.find((applying) => applying.column === 'surface_water')
+        && (
+          <option
+            value="surface_water"
+          >
+            surface_water
+          </option>)
+        }
       </select>
       <select
         data-testid="comparison-filter"
