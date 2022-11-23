@@ -6,44 +6,65 @@ function Table() {
   const [column, setColumn] = useState('population');
   const [compare, setCompare] = useState('maior que');
   const [number, setNumber] = useState(0);
+  const [appliedFilters, setAppliedFilters] = useState([]);
 
   useEffect(() => {
     setFilteredPanets(planets);
   }, [planets, setFilteredPanets]);
 
   const filterColumn = ({ target }) => {
-    const newColumn = planets.map((planet) => ({
-      [target.value]: planet[target.value],
-    }));
+    if (appliedFilters.length > 0) {
+      // const newColumn = filteredPlanets.map((planet) => appliedFilters.map((entry) => ({
+      //   [entry.column]: planet[entry.column],
+      //   [target.value]: planet[target.value],
+      // }))[0]);
+      // setColumn(target.value);
+      // setFilteredPanets(newColumn);
+    }
+    // const newColumn = filteredPlanets.map((planet) => ({
+    //   [target.value]: planet[target.value],
+    // }));
     setColumn(target.value);
-    setFilteredPanets(newColumn);
+    // setFilteredPanets(newColumn);
   };
 
   const handleClick = () => {
-    const newColumn = planets.map((planet) => ({
-      [column]: planet[column],
-    }));
+    const apply = {
+      column,
+      compare,
+      number,
+    };
 
-    switch (compare) {
-    case 'maior que':
-      setFilteredPanets(
-        newColumn.filter((planet) => Number(Object.values(planet)[0]) > number),
-      );
-      break;
-    case 'menor que':
-      setFilteredPanets(
-        newColumn.filter((planet) => Number(Object.values(planet)[0]) < number),
-      );
-      break;
-    default:
-      setFilteredPanets(
-        newColumn.filter((planet) => Number(Object.values(planet)[0]) === Number(number)),
-      );
-    }
+    const filtering = () => {
+      switch (compare) {
+      case 'maior que':
+        return filteredPlanets
+          .filter((planet) => Number(planet[column]) > Number(number));
+        // .map((entry) => ({ ...entry, [column]: entry[column] }));
+      case 'menor que':
+        return filteredPlanets
+          .filter((planet) => Number(planet[column]) < Number(number));
+        // .map((entry) => ({ ...entry, [column]: entry[column] }));
+      default:
+        return filteredPlanets
+          .filter((planet) => Number(planet[column]) === Number(
+            number,
+          ));
+          // .map((entry) => ({ ...entry, [column]: entry[column] }));
+      }
+    };
+
+    // console.log();
+    setFilteredPanets(filtering());
+    setAppliedFilters(apply);
   };
   return (
     <>
-      <select onClick={ filterColumn } data-testid="column-filter">
+      {console.log(filteredPlanets)}
+      <select
+        onClick={ filterColumn }
+        data-testid="column-filter"
+      >
         <option
           value="population"
         >
