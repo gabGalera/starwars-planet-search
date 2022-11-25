@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react';
 import Table from './components/Table';
 import './App.css';
 import PlanetsContext from './context/PlanetsContext';
+import FirstFilterSet from './components/FirstFilterSet';
+import SecondFilterSet from './components/SecondFilterSet';
+// import Loading from './components/Loading';
 
 function App() {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredPlanets, setFilteredPanets] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [column, setColumn] = useState('population');
+  const [compare, setCompare] = useState('maior que');
+  const [number, setNumber] = useState(0);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [sortedColumn, setSortedColumn] = useState({
+    order: { column: 'population', sort: '' } });
 
   useEffect(() => {
     fetch('https://swapi.dev/api/planets')
@@ -28,10 +37,36 @@ function App() {
     setFilteredPanets(newArray);
   };
 
+  const filtering = (filteringPlanets, applying) => {
+    switch (applying.compare) {
+    case 'maior que':
+      return filteringPlanets
+        .filter((planet) => Number(planet[applying.column]) > Number(applying.number));
+    case 'menor que':
+      return filteringPlanets
+        .filter((planet) => Number(planet[applying.column]) < Number(applying.number));
+    default:
+      return filteringPlanets
+        .filter((planet) => Number(planet[applying.column]) === Number(
+          applying.number,
+        ));
+    }
+  };
+
   const context = {
     planets,
     filteredPlanets,
     setFilteredPanets,
+    column,
+    setColumn,
+    compare,
+    setCompare,
+    number,
+    setNumber,
+    appliedFilters,
+    setAppliedFilters,
+    sortedColumn,
+    setSortedColumn,
   };
 
   if (loading) return <h1>Loading...</h1>;
@@ -44,7 +79,12 @@ function App() {
         onChange={ filterFunc }
         data-testid="name-filter"
       />
-      <Table />
+      <FirstFilterSet filtering={ filtering } />
+      <SecondFilterSet
+        sortedColumn={ sortedColumn }
+        setSortedColumn={ setSortedColumn }
+      />
+      <Table filtering={ filtering } />
     </PlanetsContext.Provider>
   );
 }

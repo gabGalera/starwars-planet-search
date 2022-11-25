@@ -1,54 +1,16 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import PlanetsContext from '../context/PlanetsContext';
-// import TrashIcon from './TrashIcon';
 
-function Table() {
-  const { planets, filteredPlanets, setFilteredPanets } = useContext(PlanetsContext);
-  const [column, setColumn] = useState('population');
-  const [compare, setCompare] = useState('maior que');
-  const [number, setNumber] = useState(0);
-  const [appliedFilters, setAppliedFilters] = useState([]);
+function Table({ filtering }) {
+  const { planets,
+    filteredPlanets,
+    setFilteredPanets, sortedColumn,
+    appliedFilters, setAppliedFilters } = useContext(PlanetsContext);
 
   useEffect(() => {
     setFilteredPanets(planets);
   }, [planets, setFilteredPanets]);
-
-  const filterColumn = ({ target }) => {
-    setColumn(target.value);
-  };
-
-  const filtering = (filteringPlanets, applying) => {
-    switch (applying.compare) {
-    case 'maior que':
-      return filteringPlanets
-        .filter((planet) => Number(planet[applying.column]) > Number(applying.number));
-    case 'menor que':
-      return filteringPlanets
-        .filter((planet) => Number(planet[applying.column]) < Number(applying.number));
-    default:
-      return filteringPlanets
-        .filter((planet) => Number(planet[applying.column]) === Number(
-          applying.number,
-        ));
-    }
-  };
-
-  const handleClick = () => {
-    const apply = [...appliedFilters, {
-      column,
-      compare,
-      number,
-    }];
-
-    let filteringPlanets = planets;
-
-    apply.forEach((applying) => {
-      filteringPlanets = filtering(filteringPlanets, applying);
-    });
-
-    setFilteredPanets(filteringPlanets);
-    setAppliedFilters(apply);
-  };
 
   const deleteCondition = ({ target }) => {
     const apply = appliedFilters.filter((value, index) => index !== Number(target.name));
@@ -63,186 +25,118 @@ function Table() {
     setAppliedFilters(apply);
   };
 
+  const preSorted = sortedColumn.order.sort === 'ASC' ? filteredPlanets
+    .sort((a, b) => a[sortedColumn.order.column] - b[sortedColumn
+      .order.column]) : filteredPlanets
+    .sort((a, b) => b[sortedColumn.order.column] - a[sortedColumn.order.column]);
+
   return (
-    <>
-      {console.log(filteredPlanets)}
-      <select
-        onClick={ filterColumn }
-        data-testid="column-filter"
+    <div>
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '4px',
+        } }
       >
-        {
-          !appliedFilters.find((applying) => applying.column === 'population')
-        && (
-          <option
-            value="population"
-          >
-            population
-          </option>)
-        }
-        {
-          !appliedFilters.find((applying) => applying.column === 'orbital_period')
-        && (
-          <option
-            value="orbital_period"
-          >
-            orbital_period
-          </option>)
-        }
-        {
-          !appliedFilters.find((applying) => applying.column === 'diameter')
-        && (
-          <option
-            value="diameter"
-          >
-            diameter
-          </option>)
-        }
-        {
-          !appliedFilters.find((applying) => applying.column === 'rotation_period')
-        && (
-          <option
-            value="rotation_period"
-          >
-            rotation_period
-          </option>)
-        }
-        {
-          !appliedFilters.find((applying) => applying.column === 'surface_water')
-        && (
-          <option
-            value="surface_water"
-          >
-            surface_water
-          </option>)
-        }
-      </select>
-      <select
-        data-testid="comparison-filter"
-        onClick={ ({ target }) => setCompare(target.value) }
-      >
-        <option
-          value="maior que"
-        >
-          maior que
-        </option>
-        <option
-          value="menor que"
-        >
-          menor que
-        </option>
-        <option
-          value="igual a"
-        >
-          igual a
-        </option>
-      </select>
-      <input
-        type="number"
-        data-testid="value-filter"
-        value={ number }
-        onChange={ ({ target }) => setNumber(target.value) }
-      />
+        {appliedFilters.map((applying, index) => (
+          <div data-testid="filter" key={ index }>
+            <span
+              style={ {
+                margin: '4px',
+              } }
+            >
+              {applying.column}
+              {' '}
+              {applying.compare}
+              {' '}
+              {applying.number}
+            </span>
+            <button
+              type="button"
+              style={ {
+                display: 'flex',
+                width: '5%',
+              } }
+              name={ index }
+              onClick={ deleteCondition }
+            >
+              Apagar
+            </button>
+          </div>
+        )) }
+      </div>
       <button
         type="button"
-        data-testid="button-filter"
-        onClick={ handleClick }
+        data-testid="button-remove-filters"
+        onClick={ () => {
+          setAppliedFilters([]);
+          setFilteredPanets(planets);
+        } }
       >
-        Filtrar
+        Remover Filtragens
       </button>
-      <div>
-        <div
-          style={ {
-            display: 'flex',
-            flexDirection: 'column',
-            margin: '4px',
-          } }
-        >
-          {appliedFilters.map((applying, index) => (
-            <div data-testid="filter" key={ index }>
-              <span
+      <table style={ { overflow: 'hidden' } }>
+        <thead>
+          <tr>
+            {(filteredPlanets.length > 0
+              ? Object.keys(filteredPlanets[0])
+              : Object.keys(planets[0])
+            ).map((title) => (
+              <th
+                key={ title }
                 style={ {
-                  margin: '4px',
+                  background: '#2E3035',
+                  border: '1px solid #000000',
+                  borderRadius: '1px 0px 0px 0px',
+
+                  fontFamily: 'Epilogue',
+                  fontStyle: 'normal',
+                  fontWeight: '700',
+                  fontSize: '14px',
+                  lineHeight: '18px',
+                  /* or 129% */
+
+                  color: '#FFFFFF',
                 } }
               >
-                {applying.column}
-                {' '}
-                {applying.compare}
-                {' '}
-                {applying.number}
-              </span>
-              <button
-                type="button"
-                style={ {
-                  display: 'flex',
-                  width: '5%',
-                } }
-                name={ index }
-                onClick={ deleteCondition }
-              >
-                Apagar
-              </button>
-            </div>
-          )) }
-        </div>
-        <button
-          type="button"
-          data-testid="button-remove-filters"
-          onClick={ () => {
-            setAppliedFilters([]);
-            setFilteredPanets(planets);
-          } }
-        >
-          Remover Filtragens
-        </button>
-        <table style={ { overflow: 'hidden' } }>
-          <thead>
-            <tr>
-              {(filteredPlanets.length > 0
-                ? Object.keys(filteredPlanets[0])
-                : Object.keys(planets[0])
-              ).map((title) => (
-                <th
-                  key={ title }
-                  style={ {
-                    background: '#2E3035',
-                    border: '1px solid #000000',
-                    borderRadius: '1px 0px 0px 0px',
-
-                    fontFamily: 'Epilogue',
-                    fontStyle: 'normal',
-                    fontWeight: '700',
-                    fontSize: '14px',
-                    lineHeight: '18px',
-                    /* or 129% */
-
-                    color: '#FFFFFF',
-                  } }
-                >
-                  {(title.charAt(0).toUpperCase() + title.slice(1)).replace(/_/, ' ')}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPlanets
-              .map((planet) => (
-                <tr key={ planet.name }>
-                  {
-                    Object.values(planet).map((entry) => (
+                {(title.charAt(0).toUpperCase() + title.slice(1)).replace(/_/, ' ')}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {(sortedColumn.order.sort === '' ? filteredPlanets : preSorted)
+            .map((planet) => (
+              <tr key={ planet.name }>
+                {
+                  Object.values(planet).map((entry, index) => (
+                    index === 0 ? (
+                      <th
+                        data-testid="planet-name"
+                        key={ entry.name }
+                      >
+                        {entry}
+                      </th>
+                    ) : (
                       <th
                         key={ entry.name }
                       >
                         {entry}
                       </th>
-                    ))
-                  }
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+                    )
+                  ))
+                }
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 export default Table;
+
+Table.propTypes = {
+  filtering: PropTypes.func.isRequired,
+};
