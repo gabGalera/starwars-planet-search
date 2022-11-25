@@ -50,4 +50,10 @@ test('I am your test', async () => {
   userEvent.click(removeAllButton)
 
   expect(deleteButtons[0]).not.toBeInTheDocument()
+  const sortButton = await screen.findByRole('button', {  name: /Ordenar/i })
+  const sortInputs = await screen.findByRole("textbox", { value: 'ASC' })
+  userEvent.click(sortInputs);
+  userEvent.click(sortButton);
+  screen.debug()
+
 });
