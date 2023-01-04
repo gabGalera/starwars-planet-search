@@ -24,8 +24,8 @@ function App() {
     order: { column: 'population', sort: '' } });
 
   useEffect(() => {
-    global.alert(`This website works with background music. 
-Press OK to continue.`);
+    global.alert(`If you want this this website to work with 
+background music, please check your browser permissions. Press OK to continue.`);
     const loadingTime = 7000;
     const musicTime = 49600;
     setTimeout(() => {
