@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/Table.module.css';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table({ filtering }) {
@@ -31,21 +32,17 @@ function Table({ filtering }) {
     .sort((a, b) => b[sortedColumn.order.column] - a[sortedColumn.order.column]);
 
   return (
-    <div>
+    <div style={ { width: '100%' } }>
       <div
-        style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          margin: '4px',
-        } }
+        className={ styles.remove_div }
       >
         {appliedFilters.map((applying, index) => (
-          <div data-testid="filter" key={ index }>
-            <span
-              style={ {
-                margin: '4px',
-              } }
-            >
+          <div
+            data-testid="filter"
+            key={ index }
+            className={ styles.filter_div }
+          >
+            <span>
               {applying.column}
               {' '}
               {applying.compare}
@@ -53,11 +50,8 @@ function Table({ filtering }) {
               {applying.number}
             </span>
             <button
+              className={ styles.delete_button }
               type="button"
-              style={ {
-                display: 'flex',
-                width: '5%',
-              } }
               name={ index }
               onClick={ deleteCondition }
             >
@@ -67,6 +61,7 @@ function Table({ filtering }) {
         )) }
       </div>
       <button
+        className={ styles.delete_all }
         type="button"
         data-testid="button-remove-filters"
         onClick={ () => {
@@ -76,61 +71,57 @@ function Table({ filtering }) {
       >
         Remover Filtragens
       </button>
-      <table style={ { overflow: 'hidden' } }>
-        <thead>
-          <tr>
-            {(filteredPlanets.length > 0
-              ? Object.keys(filteredPlanets[0])
-              : Object.keys(planets[0])
-            ).map((title) => (
-              <th
-                key={ title }
-                style={ {
-                  background: '#2E3035',
-                  border: '1px solid #000000',
-                  borderRadius: '1px 0px 0px 0px',
+      <div
+        style={ {
+          height: '48vh',
+          overflow: 'scroll',
+        } }
+      >
+        <table>
+          <thead>
+            <tr>
+              {(filteredPlanets.length > 0
+                ? Object.keys(filteredPlanets[0])
+                : Object.keys(planets[0])
+              ).map((title) => (
+                <th
+                  key={ title }
+                >
+                  {(title.charAt(0).toUpperCase() + title.slice(1)).replace(/_/, ' ')}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {(sortedColumn.order.sort === '' ? filteredPlanets : preSorted)
+              .map((planet) => (
+                <tr key={ planet.name }>
+                  {
+                    Object.values(planet).map((entry, index) => (
+                      index === 0 ? (
+                        <th
+                          data-testid="planet-name"
+                          key={ entry.name }
+                          style={ {
 
-                  fontFamily: 'Epilogue',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '18px',
-                  /* or 129% */
-
-                  color: '#FFFFFF',
-                } }
-              >
-                {(title.charAt(0).toUpperCase() + title.slice(1)).replace(/_/, ' ')}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {(sortedColumn.order.sort === '' ? filteredPlanets : preSorted)
-            .map((planet) => (
-              <tr key={ planet.name }>
-                {
-                  Object.values(planet).map((entry, index) => (
-                    index === 0 ? (
-                      <th
-                        data-testid="planet-name"
-                        key={ entry.name }
-                      >
-                        {entry}
-                      </th>
-                    ) : (
-                      <th
-                        key={ entry.name }
-                      >
-                        {entry}
-                      </th>
-                    )
-                  ))
-                }
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                          } }
+                        >
+                          {entry}
+                        </th>
+                      ) : (
+                        <th
+                          key={ entry.name }
+                        >
+                          {entry}
+                        </th>
+                      )
+                    ))
+                  }
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

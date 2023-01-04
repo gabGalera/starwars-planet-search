@@ -1,0 +1,79 @@
+.column_div {
+  display: flex;
+  flex-direction: column;
+  width: 5%;
+}
+
+select {
+  align-items: center;
+  background-color: transparent;
+  border: transparent;
+  border-bottom: 1px solid white;
+  color: white;
+  display: flex;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal ,;
+  font-weight: 700;
+  line-height: 18px , /* or 129% */;
+  margin: 5px 0 0;
+  width: 200%;
+}
+
+option {
+  color: black;
+}
+
+.value_filter {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* or 129% */
+  margin: 5px 0 0;
+  padding: 0.5%;
+  width: 8%;
+}
+
+.filter_button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid #fae60a;
+  border-radius: 5px;
+  color: #fae60a;
+  display: flex;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  height: 200%;
+  justify-content: center;
+  line-height: 18px; /* or 129% */
+  text-align: center;
+  width: 8%;
+}
+
+@media ( max-width : 960px ) {
+
+  .column_div {
+    margin-bottom: 10px;
+    width: 50%;
+  }
+
+  .value_filter {
+    margin-bottom: 10px;
+    width: 98.5%;
+  }
+
+  .filter_button {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+  }
+}

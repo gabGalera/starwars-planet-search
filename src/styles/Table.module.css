@@ -1,0 +1,96 @@
+.remove_div {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin: 4px;
+}
+
+.filter_div {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 35%;
+}
+
+.delete_button {
+  background: transparent;
+  border: 1px solid #fae60a;
+  border-radius: 5px;
+  color: #fae60a;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* or 129% */
+  margin: 0 0 2% 5%;
+  width: 30%;
+}
+
+.delete_all {
+  align-items: center;
+  background: transparent;
+  border: 1px solid #fae60a;
+  border-radius: 5px;
+  color: #fae60a;
+  display: flex;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  justify-content: center;
+  line-height: '18px'; /* or 129% */
+  margin: 1% 0 1% 20%;
+  text-align: center;
+  width: 10%;
+}
+
+thead tr th {
+  background: #2e3035;
+  border: 1px solid black;
+  border-radius: 1px 0 0;
+  color: white;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  height: 10px;
+  line-height: 18px; /* or 129% */
+  padding: 20px;
+}
+
+tbody tr th {
+  border-bottom: 1px solid #828282;
+  color: #aeaeae;
+  font-family: Epilogue , sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  height: 10px;
+  line-height: 18px; /* or 129% */
+  padding: 20px;
+}
+
+@media ( max-width : 960px ) {
+
+  .remove_div {
+    align-items: center;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+
+  .filter_div {
+    align-items: center;
+    margin-bottom: 5px;
+    width: 90%;
+  }
+
+  .delete_button {
+    margin-bottom: 10px;
+    width: 40%;
+  }
+
+  .delete_all {
+    margin-bottom: 10px;
+    width: 50%;
+  }
+}

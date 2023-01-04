@@ -1,0 +1,56 @@
+.order_dropbox {
+  display: flex;
+  flex-direction: column;
+  width: 5%;
+}
+
+.order_div {
+  display: flex;
+  flex-direction: column;
+  width: 5%;
+}
+
+.asc_div {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order_button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid #fae60a;
+  border-radius: 5px;
+  color: #fae60a;
+  display: flex;
+  font-family: Epilogue , sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  height: 200%;
+  justify-content: center;
+  line-height: 18px; /* or 129% */
+  text-align: center;
+  width: 8%;
+}
+
+@media ( max-width : 960px ) {
+
+  .order_dropbox {
+    margin-bottom: 10px;
+    width: 50%;
+  }
+
+  .order_div {
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    margin-left: 38%;
+    width: 98.5%;
+  }
+
+  .order_button {
+    padding: 5px;
+    width: 100%;
+  }
+}
