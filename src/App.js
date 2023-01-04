@@ -24,8 +24,6 @@ function App() {
     order: { column: 'population', sort: '' } });
 
   useEffect(() => {
-    global.alert(`If you want this this website to work with 
-background music, please check your browser permissions. Press OK to continue.`);
     const loadingTime = 7000;
     const musicTime = 49600;
     setTimeout(() => {
@@ -89,13 +87,13 @@ background music, please check your browser permissions. Press OK to continue.`)
       { playMusic && (
         <audio
           preload="auto"
-          autoPlay
+          autoPlay={ playMusic }
           src={ theme }
         >
           <track kind="captions" src="background music" srcLang="no" />
           Your browser does not support the audio element.
         </audio>
-      ) }
+      )}
       { loading ? (
         <div
           className={ styles.loading_div }
