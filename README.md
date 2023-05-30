@@ -1,13 +1,39 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Star Wars Planet Search
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+<p>Projeto desenvolvido em React com Context API que consiste em um aplicativo que exibe dados sobre planetas da saga Star Wars. As informações são fornecidas por uma API externa e o projeto possui um design responsivo</p>
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## 🚀 Começando o projeto
+
+Para ver seu funcionamento existem duas opções:
+
+* Acessar o deploy: https://starwars-planet-search-psi.vercel.app/;
+* Ou instalar o projeto em sua máquina. 
+
+## 🔧 Rodando em sua máquina
+
+Para rodar o projeto em sua máquina, primeiro faça um clone desse repositório. Em seguida, instale as dependências do projeto utilizando o comando:
+```
+npm install
+```
+Após instalar as dependências, é possível ver o programa rodar a partir do comando:
+```
+npm start
+```
+Feito isso, o React abrirá automaticamente uma aba em seu navegador com o projeto.
+
+## 📦 Testes
+
+Este projeto também contém testes unitários. Para vê-los em ação, basta rodar o comando:
+```
+npm test
+```
+
+## 🛠️ Contruído com
+
+* React
+* React-Router
+* Context API
+* React Hooks
+* CSS Modules
+* Jest
+* RTL
